@@ -1,0 +1,25 @@
+name: First Workflow
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-shell-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run shell commands
+        run: |
+          echo "Starting the workflow..."
+          echo "Current directory contents:"
+          ls -la
+          echo "Workflow completed."
+      - name: Multiple commands
+        run: |
+          echo "GitHub Context:"
+          echo "${{ toJson(github) }}"
+          npm --version
+          node --version
