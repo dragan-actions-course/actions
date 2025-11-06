@@ -23,3 +23,24 @@ jobs:
           echo "${{ toJson(github) }}"
           npm --version
           node --version
+          
+  parallel-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run parallel commands
+        run: |
+          echo "This is a parallel job running alongside the first job."
+          date
+          uname -a  
+  dependent-job:
+    needs: run-shell-commands
+    runs-on: windows-latest
+    steps:
+      - name: Dependent job step
+        run: |
+          write-output "This job runs after the 'run-shell-commands' job is complete."
+          write-output "All previous commands executed successfully."  
+      - name: errorstep
+        run: |
+          doesnotexist
+          
