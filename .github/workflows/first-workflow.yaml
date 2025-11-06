@@ -42,5 +42,4 @@ jobs:
           write-output "All previous commands executed successfully."  
       - name: errorstep
         run: |
-          doesnotexist
-          
+          doesnotexits
