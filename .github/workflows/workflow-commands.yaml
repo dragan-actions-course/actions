@@ -1,0 +1,17 @@
+name: workflow-commands
+on:
+  push:
+    branches:
+      - main   
+
+jobs:
+  testing-workflow-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: settings an error message
+       
+        run: |
+          echo "::error::Missing semicolon"
+          echo "Listing files in the repository:"
+          ls -la
+          echo "Workflow commands displayed successfully."
