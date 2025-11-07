@@ -12,6 +12,7 @@ on:
 jobs:
   expressions-and-context-job:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - name: Display some context and expressions
         run: |
