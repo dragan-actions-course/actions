@@ -1,0 +1,20 @@
+name: workflow-run
+on:
+  workflow_run:
+    types: [completed]  
+    workflows: ["github events"]
+  #push:
+  #  branches:
+   #   - main
+  #pull_request:
+  #  types: [opened, synchronize, reopened, closed]
+  #  branches:
+  #  - main
+jobs:
+  workflow-run-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: some echos
+        run: |
+          echo "Workflow run event triggered. because github events workflow completed."
+     
