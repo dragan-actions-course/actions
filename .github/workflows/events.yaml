@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - main
+      - feature/feata
   pull_request:
     branches:
       - main
+      - feature/feata
   issues:   
     types: [opened, closed, reopened]
 jobs:
