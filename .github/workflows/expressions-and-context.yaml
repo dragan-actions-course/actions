@@ -8,7 +8,7 @@ on:
     branches:
       - main
   issues:   
-    types: [opened, closed, reopened, labeled]
+    #types: [opened, closed, reopened, labeled]
   
 
 jobs:
@@ -25,6 +25,7 @@ jobs:
       - name: Run only if event is issues and has 'bug' label
         if: contains(github.event.issue.labels.*.name, 'bug')
         run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}"
+  
   using-expressions-and-context:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
