@@ -1,14 +1,17 @@
 name: github events
-on: 
+on:
   push:
     branches:
       - main
-    #  - feature/feata
+      # - feature/feata
+      - develop
+      - "!feature/feata"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
     #  - feature/feata
+ 
   issues:   
     types: [opened, closed, reopened]
 jobs:

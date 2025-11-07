@@ -1,0 +1,11 @@
+name: manually triggered workflow
+on:
+  workflow_dispatch:
+jobs:
+  manual-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: manual job step
+        run: |
+          echo "This is a manually triggered workflow."
+          echo "You can add your custom steps here."
