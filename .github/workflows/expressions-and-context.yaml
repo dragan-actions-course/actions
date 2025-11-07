@@ -16,12 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(fromJson('["issues","pull_request","push"]'), github.event_name)
     steps:
-      - name: Debug labels specifically
-        if: github.event_name == 'issues' || github.event_name == 'issue'
-        run: |
-            echo "Issue number: ${{ github.event.issue.number }}"
-            echo "Labels array: ${{ toJson(github.event.issue.labels) }}"
-            echo "Label names: ${{ toJson(github.event.issue.labels.*.name) }}"
       - name: Run only if event is issues and has 'bug' label
         if: contains(github.event.issue.labels.*.name, 'bug')
         run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}"
