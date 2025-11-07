@@ -23,15 +23,13 @@ jobs:
             echo "Labels array: ${{ toJson(github.event.issue.labels) }}"
             echo "Label names: ${{ toJson(github.event.issue.labels.*.name) }}"
 
-
+   
       - name: Run only if event is issues and has 'bug' label
-        if: |
-            github.event_name == 'issues' && 
-            contains(toJson(github.event.issue.labels.*.name), 'bug')
-        run: |
-            echo "Found the 'bug' label!"
-            echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
-    
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}"
+  using-expressions-and-context:
+    runs-on: ubuntu-latest
+    steps:
       - name: Display some context and expressions
         run: |
           echo "Repository: ${{ github.repository }}"
