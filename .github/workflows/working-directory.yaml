@@ -24,6 +24,9 @@ jobs:
           pwd
   working-directory-windows:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
     steps:
       - name: Display working directory contents
         run: |
