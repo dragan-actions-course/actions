@@ -1,6 +1,11 @@
 name: manually triggered workflow
 on:
   workflow_dispatch:
+    inputs:
+        stri:
+            description: 'An example input for the manual workflow'
+            required: false
+            default: 'default value'
 jobs:
   manual-job:
     runs-on: ubuntu-latest
