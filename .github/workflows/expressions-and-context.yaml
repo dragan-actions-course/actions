@@ -22,13 +22,12 @@ jobs:
             echo "Issue number: ${{ github.event.issue.number }}"
             echo "Labels array: ${{ toJson(github.event.issue.labels) }}"
             echo "Label names: ${{ toJson(github.event.issue.labels.*.name) }}"
-
-   
       - name: Run only if event is issues and has 'bug' label
         if: contains(github.event.issue.labels.*.name, 'bug')
         run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}"
   using-expressions-and-context:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
       - name: Display some context and expressions
         run: |
