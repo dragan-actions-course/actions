@@ -17,9 +17,9 @@ jobs:
     if: contains(fromJson('["issues","pull_request","push"]'), github.event_name)
     steps:
       - name: Run only if event is issues and has 'bug' label
-        # Join the array of label names into a string like 'bug, documentation, enhancement'
-        # Then check if that string contains the desired label.
-        if: github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'bug')
+        if: |
+            github.event_name == 'issues' && 
+            contains(toJson(github.event.issue.labels.*.name), 'bug')
         run: |
             echo "Found the 'bug' label!"
             echo "Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
