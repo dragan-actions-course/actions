@@ -12,8 +12,12 @@ on:
 jobs:
   expressions-and-context-job:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    if: contains(fromJson('["issues","pull_request","push"]'), github.event_name)
     steps:
+      - name: Run only if event is issues, pull_request, or push
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        run: echo ${{ join(github.event.issue.labels.*.name, ', ') }}
+    
       - name: Display some context and expressions
         run: |
           echo "Repository: ${{ github.repository }}"
