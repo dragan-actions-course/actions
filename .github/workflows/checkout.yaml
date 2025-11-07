@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - feature/feata
 jobs:
   checkout-and-display-files:
     runs-on: ubuntu-latest
@@ -17,3 +18,4 @@ jobs:
         run: |
           echo "Listing repository contents after checkout:"
           ls -la
+          pwd
