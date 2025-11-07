@@ -15,3 +15,5 @@ jobs:
           echo "Listing files in the repository:"
           ls -la
           echo "Workflow commands displayed successfully."
+      - name: setting a warning message with params
+        run: echo "::error title=Error title,file:app.js,line:10,col:15::Unexpected token"
