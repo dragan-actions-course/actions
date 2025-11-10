@@ -32,7 +32,7 @@ jobs:
         exclude:
           - os: ubuntu-latest
             node-version: 14
-      fail-fast: true
+      fail-fast: false
       # max-parallel: 3
     runs-on: ${{ matrix.os }}
     steps:
