@@ -1,25 +1,28 @@
-name: matrix workflow
-on:
-  push:
-    branches:
-      - main    
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+name: Matrix
+on: [push]
+
+#------- ORIGINAL --------#
+# X {os: ubuntu-latest, node-version: 14, is-ubuntu: true, experimental: false}
+# {os: ubuntu-latest, node-version: 15, is-ubuntu: true, experimental: false}
+# {os: ubuntu-latest, node-version: 16, is-ubuntu: true, experimental: true}
+# {os: windows-latest, node-version: 14, experimental: false}
+# {os: windows-latest, node-version: 15, experimental: false}
+# {os: windows-latest, node-version: 16, experimental: false}
+# {os: macos-latest, node-version: 15}
+# {os: ubuntu-latest, node-version: 17 }
+
 jobs:
   node-matrix:
-    continue-on-error: false
+    continue-on-error: ${{ matrix.experimental == true }}
     strategy:
       matrix:
-        experimental: [false]
-        node-version: [14, 15, 16]
         os: [ubuntu-latest, windows-latest]
-        includes:
-          - os: ubuntu-latest  
+        node-version: [14, 15, 16]
+        include:
+          - os: ubuntu-latest
             is-ubuntu: true
           - os: macos-latest
-            node-version: 18
+            node-version: 15
           - experimental: false
           - os: ubuntu-latest
             node-version: 16
@@ -30,14 +33,13 @@ jobs:
           - os: ubuntu-latest
             node-version: 14
       fail-fast: true
-     # max-parallel: 3
+      # max-parallel: 3
     runs-on: ${{ matrix.os }}
-    
     steps:
-      - if: ${{ matrix.experimental == true }}
+      - if: matrix.experimental == true
         run: exit 1
       - run: node -v
-      - run: echo "OS is ${{ toJson(matrix) }}"
+      - run: echo '${{ toJson(matrix) }}'
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
