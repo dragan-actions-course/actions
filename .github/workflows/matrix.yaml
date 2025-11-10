@@ -9,7 +9,7 @@ on:
       - main
 jobs:
   node-matrix:
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: false
     strategy:
       matrix:
         experimental: [false]
