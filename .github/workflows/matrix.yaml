@@ -9,13 +9,32 @@ on:
       - main
 jobs:
   node-matrix:
-    runs-on: ubuntu-latest
+    continue-on-error: false
     strategy:
       matrix:
         node-version: [14, 15, 16]
+        os: [ubuntu-latest, windows-latest]
+        includes:
+          - os: ubuntu-latest  
+            is-ubuntu: true
+          - os: macos-latest
+            node-version: 18
+          - experimental: false
+          - os: ubuntu-latest
+            node-version: 16
+            experimental: true
+          - os: ubuntu-latest
+            node-version: 17
+        exclude:
+          - os: ubuntu-latest
+            node-version: 14
+     # max-parallel: 3
+    runs-on: ${{ matrix.os }}
+    
     steps:
       - run: node -v
-      - uses: actions/setuo-node@v3
+      - run: echo "OS is ${{ toJson(matrix) }}"
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: node -v
