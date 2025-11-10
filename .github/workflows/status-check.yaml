@@ -12,9 +12,11 @@ jobs:
     steps:
       - name: Step 1
         run: sleep 20
-      - name: failing step
+      - name: step 2
+        id: step2
+        continue-on-error: true
         run: exit 1
-      - name: Run on failure
+      - name: Runs on step 2 failure
         if: failure()
         run: echo "This step runs only if previous steps have failed."
       - name: Runs on sucess
