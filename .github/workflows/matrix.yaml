@@ -33,7 +33,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     steps:
-      - if: matrix.experimental == true
+      - if: ${{matrix.experimental == true}}
         run: exit 1
       - run: node -v
       - run: echo "OS is ${{ toJson(matrix) }}"
