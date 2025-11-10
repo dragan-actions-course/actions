@@ -17,7 +17,11 @@ jobs:
         includes:
           - os: ubuntu-latest  
             is-ubuntu: true
+<<<<<<< HEAD
           - os: macos-latest
+=======
+          - os: wmacos-latest
+>>>>>>> 91b559baef722828465ff0aae88bef95a4216ac4
             node-version: 18
           - experimental: false
           - os: ubuntu-latest
@@ -26,7 +30,11 @@ jobs:
           - os: ubuntu-latest
             node-version: 17
         exclude:
+<<<<<<< HEAD
           - os: ubuntu-latest
+=======
+          - os: wubuntu-latest
+>>>>>>> 91b559baef722828465ff0aae88bef95a4216ac4
             node-version: 14
      # max-parallel: 3
     runs-on: ${{ matrix.os }}
@@ -34,7 +42,11 @@ jobs:
     steps:
       - run: node -v
       - run: echo "OS is ${{ toJson(matrix) }}"
+<<<<<<< HEAD
       - uses: actions/setup-node@v3
+=======
+      - uses: actions/setuo-node@v3
+>>>>>>> 91b559baef722828465ff0aae88bef95a4216ac4
         with:
           node-version: ${{ matrix.node-version }}
       - run: node -v
