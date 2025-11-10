@@ -1,0 +1,32 @@
+name: environment-variables
+on:
+  push:
+    branches:
+      - main    
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+    - main
+jobs:
+  env-vars-job:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    env:
+      JOB_LEVEL_ENV: "Available to all steps in the job"
+    steps:
+      - name: Display environment variables
+        run: |
+          echo "GITHUB_WORKFLOW: $GITHUB_WORKFLOW"
+          echo "GITHUB_RUN_ID: $GITHUB_RUN_ID"
+      - name: Log context
+        run: echo '${{ github.ref }}'
+      - name: Set env variable
+        run: |
+          echo "NEW_ENV_VAR=$(date) >> $GITHUB_ENV"
+          echo "JOB_LEVEL_ENV=$RANDOM" >> $GITHUB_ENV
+      - name: Log Custom Env Vars
+        run: |
+          echo "NEW_ENV_VAR: $NEW_ENV_VAR"
+          echo "JOB_LEVEL_ENV"
+          echo "$NEW_ENV_VAR"
+          echo "$JOB_LEVEL_ENV"
