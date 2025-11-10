@@ -28,10 +28,13 @@ jobs:
         exclude:
           - os: ubuntu-latest
             node-version: 14
+      fail-fast: false
      # max-parallel: 3
     runs-on: ${{ matrix.os }}
     
     steps:
+      - if: matrix.experimental == true
+        run: exit 1
       - run: node -v
       - run: echo "OS is ${{ toJson(matrix) }}"
       - uses: actions/setup-node@v3
