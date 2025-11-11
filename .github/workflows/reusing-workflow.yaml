@@ -17,4 +17,9 @@ jobs:
    secrets:
     access-token: ${{secrets.ACCESS_TOKEN}}
  calling-a-reusable-workflow-in-the-same-repo:
-    uses: ./.github/workflows/reusable-workflow-output.yaml
+    uses: ./.github/workflows/resusable-workflow-output.yaml
+ using-reusable-wf-output:
+    runs-on: ubuntu-latest
+    needs: calling-a-reusable-workflow-in-the-same-repo
+    steps:
+     - run: echo ${{needs.calling-a-reusable-workflow-in-the-same-repo.outputs.date}}
