@@ -16,3 +16,5 @@ jobs:
     name: ${{inputs.name}}
    secrets:
     access-token: ${{secrets.ACCESS_TOKEN}}
+ calling-a-reusable-workflow-in-the-same-repo:
+    uses: ./.github/workflows/reusable-workflow-output.yaml
