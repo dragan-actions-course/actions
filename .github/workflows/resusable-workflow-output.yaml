@@ -4,7 +4,7 @@ on:
    outputs:
     date:
       description: "date value"
-      value: ${{jobs.generate-output.date}}
+      value: ${{jobs.generate-output.outputs.date}}
 
 jobs:
   generate-output:
