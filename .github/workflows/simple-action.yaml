@@ -1,0 +1,21 @@
+name: sample-action
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  simple-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: simple-action
+        id: hello
+        uses: actions/hello-world-docker-action@v2  
+        with:
+          who-to-greet: 'Mona the Octocat'
+      - name: log greeting time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
