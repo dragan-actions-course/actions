@@ -14,6 +14,8 @@ on:
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.results }}
     steps:
       - uses: actions/github-script@v6
         id: set-matrix
@@ -30,10 +32,11 @@ jobs:
           echo "${{steps.step-2.outputs['step-output']}}"
 
   node-matrix:
+    needs: prepare-matrix
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [14, 15, 16]
+        os: "${{needs.prepare-matrix.outputs.matrix.os}}"
+        node-version: "${{needs.prepare-matrix.outputs.matrix['node-version']}}"
  
     runs-on: ${{ matrix.os }}
     steps:
