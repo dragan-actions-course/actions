@@ -9,7 +9,7 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
-    container: ubuntu-latest
+    container: ubuntu:22.04
     services:
        app:
          image: alialaa17/simple-node-api
@@ -25,7 +25,7 @@ jobs:
       - name: install curl
         run: apt-get update && apt-get install -y curl
       - name: Dump services context
-        run: echo "{{ toJson(job.services) }}"
+        run: echo "{{ toJSON(job.services) }}"
       - name: Post a user
         run: 'curl -X POST http://app:3000/api/users -H ''Content-Type: application/json'' -d ''{"username": "hello","address":dwded"}'''
       - name: Get all users
