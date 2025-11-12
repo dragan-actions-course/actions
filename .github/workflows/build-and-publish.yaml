@@ -18,7 +18,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: alialaa17/simple-node-api
+          images: dragan979/simple-node-api
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{vmajor}}.{{minor}}
