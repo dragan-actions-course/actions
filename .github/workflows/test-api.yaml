@@ -9,6 +9,7 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    container: ubuntu-latest
     services:
        app:
          image: alialaa17/simple-node-api
@@ -21,6 +22,8 @@ jobs:
          ports:
            - 27017:27017
     steps:
+      - name: install curl
+        run: apt-get update && apt-get install -y curl
       - name: Dump services context
         run: echo "{{ toJson(job.services) }}"
       - name: Post a user
