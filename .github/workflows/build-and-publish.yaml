@@ -36,9 +36,10 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
+            # For branch pushes (development/testing only)
+            type=ref,event=branch,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }},suffix=-dev
+            # Latest tag only for version releases
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
