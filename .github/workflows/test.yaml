@@ -22,7 +22,11 @@ jobs:
             - name: Check for Type Errors
               run: npm run typecheck
             - name: Run Tests
-              run: npm run test
+              run: |
+                # 1. Clear the Jest cache to ensure new config is used
+                npx jest --clearCache 
+                # 2. Run the tests (assuming 'test' script just runs 'jest')
+                npm run test
             - name: Build project
               run: npm run build
             - uses: actions/upload-artifact@v4
