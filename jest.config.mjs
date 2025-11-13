@@ -21,6 +21,8 @@ const config = {
   // Instruct Jest to transform specific node_modules packages (like 'uuid' 
   // and 'flagsmith-nodejs') that use modern ES Module syntax ('export').
   transformIgnorePatterns: [
+    // This regular expression ignores all node_modules files EXCEPT those in 'uuid' or 'flagsmith-nodejs'.
+    // The '|' (OR) symbol allows you to add more packages later if they cause similar issues.
     "/node_modules/(?!(uuid|flagsmith-nodejs)/)",
   ],
 };
