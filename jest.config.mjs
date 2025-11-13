@@ -24,7 +24,7 @@ const config = {
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
   ],
   
-  // 3. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
+  // 2. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
   modulePathIgnorePatterns: [
     "<rootDir>/e2e/",
     "<rootDir>/src/package.json" // Critical for resolving Haste issues
