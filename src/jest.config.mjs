@@ -25,22 +25,20 @@ const config = {
     "<rootDir>/src/package.json" // This is critical for the Haste error
   ],
 
-  // ✅ FIX: Mock problematic ESM modules
-  // (Your original regex keys had newlines, which prevented them from matching)
+  // ❌ REMOVE: Mocking the package didn't work because it's imported internally by another dependency.
+  // We will now rely on transpilation using transformIgnorePatterns instead.
   moduleNameMapper: {
-    '^uuid$': '<rootDir>/__mocks__/uuid.js',
-    '^flagsmith-nodejs$': '<rootDir>/__mocks__/flagsmith-nodejs.js',
+    // '^uuid$': '<rootDir>/__mocks__/uuid.js',
+    // '^flagsmith-nodejs$': '<rootDir>/__mocks__/flagsmith-nodejs.js',
   },
 
-  // ℹ️ INFO: Removed conflicting transformIgnorePatterns.
-  // Since we are mocking uuid and flagsmith-nodejs above, we don't need
-  // to add a special rule to transform them. We can rely on the
-  // default from next/jest which (correctly) ignores node_modules.
-  //
-  // transformIgnorePatterns: [
-  //   "node_modules/(?!(uuid|flagsmith-nodejs)/)"
-  // ],
+  // ✅ FIX: Transform problematic ESM dependencies (uuid/flagsmith-nodejs)
+  // This tells Jest's transformer NOT to ignore these packages in node_modules,
+  // forcing them to be compiled by Babel, which understands the 'export' syntax.
+  transformIgnorePatterns: [
+    "node_modules/(?!(uuid|flagsmith-nodejs)/)"
+  ],
 };
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+// createJestConfig is exported exported this way to ensure that next/jest can load the Next.js config which is async
 export default createJestConfig(config);
