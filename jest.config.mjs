@@ -1,4 +1,4 @@
-const nextJest = require("next/jest");
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -13,27 +13,20 @@ const config = {
   
   // Set resolution to 'node' to help Jest prioritize CommonJS modules
   moduleResolution: 'node',
-
-  // 1. FIX: Use moduleNameMapper to alias 'uuid' to its CommonJS entry point.
-  // This is the most reliable fix for the "Unexpected token 'export'" error.
-  moduleNameMapper: {
-    // When 'uuid' is imported, Jest uses its CommonJS version instead of ESM.
-    '^uuid$': require.resolve('uuid'),
-  },
   
-  // 2. FIX: Ensure all other necessary ESM packages in node_modules are transformed.
-  // This is still good practice for flagsmith-nodejs and any other future ESM dependencies.
+  // 1. CRITICAL FIX: Ensure ESM packages (uuid, flagsmith-nodejs) are transformed by Babel/Jest.
+  // We rely on this heavily now that we cannot use require.resolve().
   transformIgnorePatterns: [
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
   ],
   
-  // 3. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
+  // 2. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
   modulePathIgnorePatterns: [
     "<rootDir>/e2e/",
-    "<rootDir>/src/package.json" // Critical for resolving Haste issues if you have a src/package.json
+    "<rootDir>/src/package.json" // Critical for resolving Haste issues
   ],
   
-  // 4. FIX: Ignore specific test file patterns
+  // 3. FIX: Ignore specific test file patterns (E2E)
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/e2e/",
@@ -41,5 +34,5 @@ const config = {
   ],
 };
 
-// module.exports is used in CommonJS instead of export default
-module.exports = createJestConfig(config);
+// Use export default when using ES Module syntax
+export default createJestConfig(config);
