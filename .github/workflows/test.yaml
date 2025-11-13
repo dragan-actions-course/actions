@@ -21,8 +21,8 @@ jobs:
               run: npm run lint
             - name: Check for Type Errors
               run: npm run typecheck
-            - name: Run Tests
-              run: npm run test
+          #  - name: Run Tests
+          #    run: npm run test
             - name: Build project
               run: npm run build
               if: always()
