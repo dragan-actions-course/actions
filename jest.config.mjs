@@ -1,4 +1,5 @@
 // jest.config.js
+
 import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
@@ -12,24 +13,29 @@ const config = {
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jest-environment-jsdom",
-  
-  // ✅ FIX: Exclude Playwright E2E files and the Haste collision path
-  testPathIgnorePatterns: [
-    "<rootDir>/node_modules/", 
-    "<rootDir>/e2e/",
-    "<rootDir>/src/e2e/"
-  ],
-  
-  // ✅ FIX: Ignore duplicate package.json to prevent Haste collision
+  moduleResolution: 'node',
+
+  // ✅ FIX: Ignore duplicate package.json to prevent Haste collision (from your update)
   modulePathIgnorePatterns: [
     "<rootDir>/e2e/",
-    "<rootDir>/src/package.json"  // This is critical for the Haste error
+    "<rootDir>/src/package.json"
   ],
   
- 
-  // ✅ FIX: Transform ESM Dependencies (uuid/flagsmith-nodejs)
+  // ✅ FIX: Transform ESM Dependencies (uuid/flagsmith-nodejs) - KEEPING THIS IS GOOD PRACTICE
   transformIgnorePatterns: [
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
+  ],
+  
+  // 💥 CRITICAL FIX: Direct the 'uuid' import to its CommonJS entry point
+  moduleNameMapper: {
+    '^uuid$': require.resolve('uuid'),
+  },
+
+  // ✅ FIX: Exclude Playwright E2E files and the Haste collision path (from your update)
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/e2e/",
+    "<rootDir>/src/e2e/"
   ],
 };
 
