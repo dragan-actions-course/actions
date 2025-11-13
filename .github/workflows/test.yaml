@@ -3,45 +3,63 @@ on:
   workflow_call:
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Setup Node Environment
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 18
-                  cache: npm
-            - name: Install Dependencies
-              run: npm ci
-            - name: Check for Linting Errors
-              run: npm run format:fix
-            - name: Check for ESlint Errors
-              run: npm run lint
-            - name: Check for Type Errors
-              run: npm run typecheck
-            - name: Run Tests
-              run: npm run test
-            - name: Build project
-              run: npm run build
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: build
-                  path: .next/
-            - name: Run unit tests
-              run: npm run test
-            - uses: actions/upload-artifact@v4
-              if: always()
-              with:
-                  name: coverage
-                  path: coverage/
-            - name: Install Playwright browser
-              run: npx playwright install --with-deps
-            - name: Run E2E tests
-              run: npm run test:e2e
-            - uses: actions/upload-artifact@v4
-              if: always()    
-              with:
-                  name: playwright-report
-                  path: playwright-report/
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Check for Linting Errors
+        run: npm run format:fix
+      - name: Check for ESlint Errors
+        run: npm run lint
+      - name: Check for Type Errors
+        run: npm run typecheck
+        
+      # --- Unit Test Run (Jest) ---
+      - name: Run Unit Tests (Jest)
+        run: npm run test
+        
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+          
+      # --- Build is required before E2E tests ---
+      - name: Build project
+        run: npm run build
+        # Note: We keep this running even if tests fail so E2E can potentially still run.
+        if: always() 
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: .next/
+          
+      # --- E2E Test Setup and Run ---
+      - name: Install Playwright browsers
+        # Use install to get the browsers required for E2E testing
+        run: npx playwright install --with-deps
+        
+      - name: Run E2E tests (Playwright)
+        run: npm run test:e2e
+        # Add '|| true' to this run command if you want subsequent steps 
+        # (like artifact upload) to run even when E2E tests fail.
+        
+      # --- Playwright Report Artifact Upload ---
+      - uses: actions/upload-artifact@v4
+        # We upload the report regardless of whether tests passed or failed
+        if: always() 
+        with:
+          name: playwright-report
+          path: playwright-report/
+          # 💡 If this still fails, ensure your 'npm run test:e2e' script 
+          # is configured to create the 'playwright-report' folder.
+          # Example: 'playwright test --reporter=html'
