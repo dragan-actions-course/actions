@@ -13,6 +13,13 @@ const config = {
 
   testEnvironment: "jest-environment-jsdom",
   modulePathIgnorePatterns: ["<rootDir>/e2e/"],
+
+  // 💥 ADD THIS SECTION 💥
+  transformIgnorePatterns: [
+    // This tells Jest NOT to ignore files in node_modules/uuid and node_modules/flagsmith-nodejs
+    // so they are processed by Babel and converted to CommonJS.
+    '/node_modules/(?!(uuid|flagsmith-nodejs)/)', 
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
