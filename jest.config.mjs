@@ -12,7 +12,17 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 
   testEnvironment: "jest-environment-jsdom",
-  modulePathIgnorePatterns: ["<rootDir>/e2e/"],
+  
+  // FIX 1: Exclude E2E directories from Jest, especially the one inside 'src'
+  // (Assuming you previously had this, keeping it for robustness)
+  modulePathIgnorePatterns: ["<rootDir>/e2e/", "<rootDir>/src/e2e/"],
+
+  // FIX 2: Instruct Jest to transform specific node_modules packages (ESM)
+  // This resolves the "SyntaxError: Unexpected token 'export'" from 'uuid'
+  // and other similar packages like 'flagsmith-nodejs'.
+  transformIgnorePatterns: [
+    "/node_modules/(?!(uuid|flagsmith-nodejs)/)",
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
