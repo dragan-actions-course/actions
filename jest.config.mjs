@@ -12,7 +12,17 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 
   testEnvironment: "jest-environment-jsdom",
-  modulePathIgnorePatterns: ["<rootDir>/e2e/"],
+
+  // 1. ❌ FIX: Playwright Tests
+  // Exclude E2E directories from Jest, especially the one inside 'src'.
+  modulePathIgnorePatterns: ["<rootDir>/e2e/", "<rootDir>/src/e2e/"],
+
+  // 2. ❌ FIX: Unexpected token 'export' (ESM)
+  // Instruct Jest to transform specific node_modules packages (like 'uuid' 
+  // and 'flagsmith-nodejs') that use modern ES Module syntax ('export').
+  transformIgnorePatterns: [
+    "/node_modules/(?!(uuid|flagsmith-nodejs)/)",
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
