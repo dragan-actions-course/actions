@@ -23,8 +23,7 @@ const config = {
   // 2. ✅ FIX: Transform ESM Dependencies (uuid/flagsmith)
   // This tells Jest to transform these specific modules which use 'export/import' syntax.
   transformIgnorePatterns: [
-  // This tells Jest to transform everything in node_modules/ EXCEPT for 'uuid' and 'flagsmith-nodejs'
-  "node_modules/(?!(uuid|flagsmith-nodejs)/)",
+  "/node_modules/(?!uuid|flagsmith-nodejs)/", 
 ],
 };
 
