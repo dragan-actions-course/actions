@@ -22,9 +22,9 @@ jobs:
       - name: Check for Type Errors
         run: npm run typecheck
         
-      # --- Unit Test Run (Jest) ---
-    #  - name: Run Unit Tests (Jest)
-    #    run: npm run test
+        #--- Unit Test Run (Jest) ---
+      - name: Run Unit Tests (Jest)
+        run: npm run test
         
       - uses: actions/upload-artifact@v4
         if: always()
