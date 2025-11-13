@@ -1,3 +1,4 @@
+// jest.config.js
 import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
@@ -12,18 +13,24 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jest-environment-jsdom",
   
-  // 1. ✅ FIX: Exclude Playwright E2E files and the Haste collision path
-  // 'e2e' is already ignored by 'modulePathIgnorePatterns', but adding it here is safer.
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/src/e2e/", "<rootDir>/src/package.json"],
+  // ✅ FIX: Exclude Playwright E2E files and the Haste collision path
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/", 
+    "<rootDir>/e2e/",
+    "<rootDir>/src/e2e/"
+  ],
   
-  // 'modulePathIgnorePatterns' is good for component files, but 'testPathIgnorePatterns' prevents running test files.
-  modulePathIgnorePatterns: ["<rootDir>/e2e/"],
-
-  // 2. ✅ FIX: Transform ESM Dependencies (uuid/flagsmith)
-  // This tells Jest to transform these specific modules which use 'export/import' syntax.
+  // ✅ FIX: Ignore duplicate package.json to prevent Haste collision
+  modulePathIgnorePatterns: [
+    "<rootDir>/e2e/",
+    "<rootDir>/src/package.json"  // This is critical for the Haste error
+  ],
+  
+  // ✅ FIX: Transform ESM Dependencies (uuid/flagsmith-nodejs)
+  // Corrected regex pattern - parentheses are needed
   transformIgnorePatterns: [
-  "/node_modules/(?!uuid|flagsmith-nodejs)/", 
-],
+    "node_modules/(?!(uuid|flagsmith-nodejs)/)"
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
