@@ -10,9 +10,6 @@ const createJestConfig = nextJest({
 const config = {
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  moduleNameMapper: {
-    // This directs Jest to the CommonJS version of uuid instead of the ESM version.
-    "^uuid$": "uuid/dist/cjs-node/index.js",
   testEnvironment: "jest-environment-jsdom",
   
   // 1. ✅ FIX: Exclude Playwright E2E files and the Haste collision path
