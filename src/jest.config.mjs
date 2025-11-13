@@ -25,16 +25,16 @@ const config = {
     "<rootDir>/src/package.json" // This is critical for the Haste error
   ],
 
-  // ❌ REMOVE: Mocking the package didn't work because it's imported internally by another dependency.
-  // We will now rely on transpilation using transformIgnorePatterns instead.
+  // ✅ FIX: Force 'uuid' to use its CommonJS (CJS) entry point to bypass the 'esm-browser'
+  // package that causes the 'Unexpected token export' error.
   moduleNameMapper: {
-    // '^uuid$': '<rootDir>/__mocks__/uuid.js',
-    // '^flagsmith-nodejs$': '<rootDir>/__mocks__/flagsmith-nodejs.js',
+    '^uuid$': '<rootDir>/node_modules/uuid/dist/cjs/index.js',
+    // We keep this mapping to guarantee the CJS version of UUID is used.
   },
 
   // ✅ FIX: Transform problematic ESM dependencies (uuid/flagsmith-nodejs)
-  // This tells Jest's transformer NOT to ignore these packages in node_modules,
-  // forcing them to be compiled by Babel, which understands the 'export' syntax.
+  // This rule is still necessary to ensure 'flagsmith-nodejs' and any internal dependencies
+  // are processed by Babel.
   transformIgnorePatterns: [
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
   ],
