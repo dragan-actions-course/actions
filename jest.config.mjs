@@ -26,8 +26,15 @@ const config = {
     "<rootDir>/src/package.json"  // This is critical for the Haste error
   ],
   
+  // ✅ FIX: Mock problematic ESM modules
+  moduleNameMapper: {
+    '^uuid
+: '<rootDir>/__mocks__/uuid.js',
+    '^flagsmith-nodejs
+: '<rootDir>/__mocks__/flagsmith-nodejs.js',
+  },
+  
   // ✅ FIX: Transform ESM Dependencies (uuid/flagsmith-nodejs)
-  // Corrected regex pattern - parentheses are needed
   transformIgnorePatterns: [
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
   ],
