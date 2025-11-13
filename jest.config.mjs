@@ -27,11 +27,10 @@ const config = {
   ],
   
   // ✅ FIX: Mock problematic ESM modules
-  moduleNameMapper: {
-    '^uuid
-: '<rootDir>/__mocks__/uuid.js',
-    '^flagsmith-nodejs
-: '<rootDir>/__mocks__/flagsmith-nodejs.js',
+moduleNameMapper: {
+    // Corrected: Added closing single quote ' after ^uuid and ^flagsmith-nodejs
+    '^uuid$': '<rootDir>/__mocks__/uuid.js', 
+    '^flagsmith-nodejs$': '<rootDir>/__mocks__/flagsmith-nodejs.js',
   },
   
   // ✅ FIX: Transform ESM Dependencies (uuid/flagsmith-nodejs)
