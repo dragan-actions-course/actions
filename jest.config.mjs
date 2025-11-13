@@ -11,22 +11,26 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jest-environment-jsdom",
   
-  // Set resolution to 'node' to help Jest prioritize CommonJS modules
-  moduleResolution: 'node',
+  // 💥 FIX 1: Removed 'moduleResolution: "node"' as it's an unknown option and caused a warning.
   
-  // 1. CRITICAL FIX: Ensure ESM packages (uuid, flagsmith-nodejs) are transformed by Babel/Jest.
-  // We rely on this heavily now that we cannot use require.resolve().
+  // 1. CRITICAL FIX (uuid): Map the 'uuid' package to its CommonJS file.
+  // This bypasses the default package resolution logic that incorrectly chooses the ESM file (esm-browser/index.js).
+  moduleNameMapper: {
+    '^uuid$': 'uuid/dist/index.js',
+  },
+  
+  // 2. CRITICAL FIX (flagsmith-nodejs and others): Ensure all necessary ESM packages are transformed.
   transformIgnorePatterns: [
     "node_modules/(?!(uuid|flagsmith-nodejs)/)"
   ],
   
-  // 2. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
+  // 3. FIX: Ignore path patterns to prevent Haste module name collision errors (e.g., duplicate package.json)
   modulePathIgnorePatterns: [
     "<rootDir>/e2e/",
     "<rootDir>/src/package.json" // Critical for resolving Haste issues
   ],
   
-  // 3. FIX: Ignore specific test file patterns (E2E)
+  // 4. FIX: Ignore specific test file patterns (E2E)
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/e2e/",
