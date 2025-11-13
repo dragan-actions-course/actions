@@ -23,9 +23,9 @@ const config = {
   // 2. ✅ FIX: Transform ESM Dependencies (uuid/flagsmith)
   // This tells Jest to transform these specific modules which use 'export/import' syntax.
   transformIgnorePatterns: [
-    // This regex tells Jest to ignore transforming everything in node_modules/ EXCEPT for 'uuid' and 'flagsmith-nodejs'
-    "node_modules/(?!(uuid|flagsmith-nodejs)/)",
-  ],
+  // This tells Jest to transform everything in node_modules/ EXCEPT for 'uuid' and 'flagsmith-nodejs'
+  "node_modules/(?!(uuid|flagsmith-nodejs)/)",
+],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
