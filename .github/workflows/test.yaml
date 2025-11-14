@@ -37,25 +37,29 @@ jobs:
            #   with:
             #      name: coverage
             #      path: coverage/
-            - name: Install necessary system dependencies (Ubuntu 24.04 fixes)
+            - name: Install necessary system dependencies for Ubuntu 24.04
+              # This resolves the package renaming issues (libasound2, libffi7, libx264-163)
               run: |
                 sudo apt-get update
                 
-                # 1. Install renamed packages
-                # libasound2 -> libasound2t64
-                # libffi7 -> libffi8
+                # Install the renamed packages: libasound2t64 (for libasound2) and libffi8 (for libffi7)
                 sudo apt-get install -y libasound2t64 libffi8 
                 
-                # 2. Use dynamic search for the latest available libx264 package
+                # Dynamically find and install the latest available libx264 package
                 LATEST_X264=$(apt search libx264- | grep ^libx264- | cut -d/ -f1 | sort -V | tail -n 1)
                 
                 if [ ! -z "$LATEST_X264" ]; then
                   echo "Installing detected package: $LATEST_X264"
                   sudo apt-get install -y "$LATEST_X264"
                 else
-                  echo "Warning: Could not automatically find libx264 package. Proceeding without it."
-                  # This warning is acceptable if libx264 isn't strictly needed for your specific browser setup.
+                  echo "Warning: Could not automatically find libx264 package. Proceeding."
                 fi
+    
+- name: Install Playwright browser
+  # This step should now succeed as the required dependencies are resolved
+  run: npx playwright install --with-deps
+
+# ... continue with your 'Run E2E tests' and 'Upload artifact' steps
     
             - name: Install Playwright browser
               # This step should now successfully find all required dependencies
