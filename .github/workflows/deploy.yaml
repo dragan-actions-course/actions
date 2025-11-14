@@ -64,7 +64,7 @@ jobs:
         id: get-env-status
         run: echo "aws_env=$(aws elasticbeanstalk describe-environments --application-name ${{vars.AWS_EB_APP_NAME}} --environment-names ${{ inputs.aws-env}} --query "Environments[0].Status" --output text)" >> $GITHUB_OUTPUT
       - name: Install EB
-        run: eb init ${{vars.AWS_EB_APP_NAME}} --platform {{vars.AWS_EB_PLATFORM}} --region ${{vars.AWS_REGION}}
+        run: eb init ${{vars.AWS_EB_APP_NAME}} --platform ${{vars.AWS_EB_PLATFORM}} --region ${{vars.AWS_REGION}}
       - name: Create a new Elastic Beanstalk environment
         if: steps.get-env-status.outputs.aws_env == 'None' || steps.get-env-status.outputs.aws_env == 'Terminated'
         run: eb create ${{ inputs.aws-env }} --instance-types ${{vars.AWS_EB_ENV_INSTANCE_TYPES}} --cname ${{ inputs.aws-env }} --envvars FLAGSMITH_KEY=${{ secrets.FLAGSMITH_KEY }}
