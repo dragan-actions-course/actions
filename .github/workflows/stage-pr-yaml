@@ -21,6 +21,8 @@ concurrency:
 jobs:
   trigger-pr-branch-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - run: echo '${{toJson(github.event)}}'
       - run: echo '${{toJosn(github.ref)}}'
