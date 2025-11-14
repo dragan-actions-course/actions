@@ -58,7 +58,7 @@ jobs:
 
             # This step should now succeed as the dependencies are met:
             - name: Install Playwright browser
-              run: npx playwright install --with-deps
+              run: npx playwright install --with-deps chromium
                           
             - name: Run E2E tests
               run: npm run test:e2e
