@@ -1,0 +1,53 @@
+name: CD
+on:
+    push:
+        branches:
+            - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref}}
+
+  cancel-in-progress: true
+
+jobs:
+    create-version-pr-or-release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Setup Node Environment
+              uses: actions/setup-node@v4
+              with:
+                node-version: 18
+                cache: npm
+            - name: Install Dependencies
+              run: npm ci
+            - name: create version PR or GitHub release
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                publish: npx changest tag
+              env:
+                GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
+            - run: echo "${{ toJson(steps.changesets)}}"
+            
+            - name: Set release avi_api_version 
+              id: get-version
+              run: echo "version=${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}" >> $GITHUB_OUTPUT
+              
+        run-tests:
+          needs: create-version-pr-or-release
+          uses: ./.github/workflows/test.yaml
+          secrets: inherit
+        deploy-to-staging:
+          needs: run-tests
+          uses: ./.github/workflows/deploy.yaml
+          with:
+            aws-env: ${{ vars.AWS_STAGING_ENV }}
+            github-env: staging
+        deploy-to-production:
+          needs: run-tests
+          uses: ./.github/workflows/deploy.yaml
+          with:
+            aws-env: ${{ vars.AWS_SPRODUCTION_ENV }}
+            github-env: production
