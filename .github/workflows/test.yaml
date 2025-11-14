@@ -57,9 +57,9 @@ jobs:
                   # This warning is acceptable if libx264 isn't strictly needed for your specific browser setup.
                 fi
     
-- name: Install Playwright browser
-  # This step should now successfully find all required dependencies
-  run: npx playwright install --with-deps
+            - name: Install Playwright browser
+              # This step should now successfully find all required dependencies
+              run: npx playwright install --with-deps
 
 # ... rest of your pipeline steps (Run E2E tests, Upload artifact)
                 
