@@ -1,0 +1,18 @@
+name: Deploy PR branches
+on:
+  issuse_comment:
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref}}
+
+  cancel-in-progress: true
+
+jobs:
+  trigger-pr-branch-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{toJson(github.event)}}'
+      - run: echo '${{toJosn(github.ref)}}'
