@@ -1,6 +1,6 @@
 name: Deploy PR branches
 on:
-  issuse_comment:
+  issue_comment:
     types: [opened]
    
   pull_request_target:
