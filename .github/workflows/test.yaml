@@ -37,25 +37,31 @@ jobs:
            #   with:
             #      name: coverage
             #      path: coverage/
-            - name: Install necessary system dependencies
+            - name: Install necessary system dependencies (Ubuntu 24.04 fixes)
               run: |
                 sudo apt-get update
                 
-                # Install static dependencies first
+                # 1. Install renamed packages
+                # libasound2 -> libasound2t64
+                # libffi7 -> libffi8
                 sudo apt-get install -y libasound2t64 libffi8 
                 
-                # Use a wildcard to install the latest available libx264 package
-                # This searches for any package name starting with 'libx264-'
+                # 2. Use dynamic search for the latest available libx264 package
                 LATEST_X264=$(apt search libx264- | grep ^libx264- | cut -d/ -f1 | sort -V | tail -n 1)
                 
                 if [ ! -z "$LATEST_X264" ]; then
                   echo "Installing detected package: $LATEST_X264"
                   sudo apt-get install -y "$LATEST_X264"
                 else
-                  echo "Warning: Could not automatically find libx264 package. Trying common alternatives."
-                  # Fallback to a common name if the search fails
-                  sudo apt-get install -y libx264-164 || true
+                  echo "Warning: Could not automatically find libx264 package. Proceeding without it."
+                  # This warning is acceptable if libx264 isn't strictly needed for your specific browser setup.
                 fi
+    
+- name: Install Playwright browser
+  # This step should now successfully find all required dependencies
+  run: npx playwright install --with-deps
+
+# ... rest of your pipeline steps (Run E2E tests, Upload artifact)
                 
             - name: Install Playwright browser
               # This command should now succeed as the dependencies are resolved
