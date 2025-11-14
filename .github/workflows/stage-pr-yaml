@@ -1,7 +1,7 @@
 name: Deploy PR branches
 on:
   issue_comment:
-    types: [creted,opened]
+    types: [created]
    
   pull_request_target:
     types: [created,opened]
@@ -14,4 +14,4 @@ jobs:
       pull-requests: write
     steps:
       - run: echo '${{toJson(github.event)}}'
-      - run: echo '${{toJosn(github.ref)}}'
+      - run: echo '${{toJson(github.ref)}}'
