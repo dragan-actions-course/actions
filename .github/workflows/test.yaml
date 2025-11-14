@@ -37,34 +37,10 @@ jobs:
            #   with:
             #      name: coverage
             #      path: coverage/
-            - name: Install necessary system dependencies (Ubuntu 24.04 Fixes)
-              run: |
-                # Update package lists
-                sudo apt-get update
-                
-                # 1. Install renamed packages: libasound2t64 (for libasound2) and libffi8 (for libffi7)
-                sudo apt-get install -y libasound2t64 libffi8 
-                
-                # 2. Dynamically find and install the latest available libx264 package
-                # This prevents the 'Unable to locate package libx264-XXX' errors.
-                LATEST_X264=$(apt search libx264- | grep ^libx264- | cut -d/ -f1 | sort -V | tail -n 1)
-                
-                if [ ! -z "$LATEST_X264" ]; then
-                  echo "Installing detected package: $LATEST_X264"
-                  sudo apt-get install -y "$LATEST_X264"
-                else
-                  echo "Warning: Could not automatically find libx264 package. Proceeding."
-                fi
-
-            # This step should now succeed as the dependencies are met:
-            - name: Install Playwright browser
-              run: npx playwright install --no-deps chromium
-                          
-            - name: Run E2E tests
-              run: npm run test:e2e
-              
-            - uses: actions/upload-artifact@v4
-              if: always()
+            - name: Run Cypress E2E Tests
+              uses: cypress-io/github-action@v6
               with:
-                  name: playwright-report
-                  path: playwright-report/
+                # Assuming your package.json script 'test:e2e' runs 'cypress run'
+                runTests: npm run test:e2e
+                # Or, if you want to explicitly call Cypress:
+                # command: npx cypress run 
