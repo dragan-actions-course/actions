@@ -8,6 +8,10 @@ on:
     types: [opened, edited, synchronize, reopened]
     branches:
       - main
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref}}
