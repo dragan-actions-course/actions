@@ -30,17 +30,4 @@ jobs:
               with:
                   name: build
                   path: .next/
-          #  - name: Run unit tests
-          #    run: npm run test
-          #  - uses: actions/upload-artifact@v4
-           #   if: always()
-           #   with:
-            #      name: coverage
-            #      path: coverage/
-            - name: Run Cypress E2E Tests
-              uses: cypress-io/github-action@v6
-              with:
-                # Assuming your package.json script 'test:e2e' runs 'cypress run'
-                runTests: npm run test:e2e
-                # Or, if you want to explicitly call Cypress:
-                # command: npx cypress run 
+        
