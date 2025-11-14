@@ -54,12 +54,7 @@ jobs:
                 else
                   echo "Warning: Could not automatically find libx264 package. Proceeding."
                 fi
-    
-- name: Install Playwright browser
-  # This step should now succeed as the required dependencies are resolved
-  run: npx playwright install --with-deps
 
-# ... continue with your 'Run E2E tests' and 'Upload artifact' steps
     
             - name: Install Playwright browser
               # This step should now successfully find all required dependencies
